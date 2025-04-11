@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{981FDB5D-0C48-40CB-AFEC-127575D930E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SneakerShop.API", "src\SneakerShop.API\SneakerShop.API.csproj", "{7936D3C8-F6C0-4438-B4A6-7FDFD8B3263E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D92DFDDC-EA7F-416E-AD84-40265927E687}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SneakerShop.UnitTest", "test\SneakerShop.UnitTest\SneakerShop.UnitTest.csproj", "{5DD59383-E839-4BE5-BE4F-AA9DFB80756E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SneakerShop.Application", "src\SneakerShop.Application\SneakerShop.Application.csproj", "{5CA77F79-CD49-46EC-82E5-8871AFCF8DC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SneakerShop.Infrastructure", "src\SneakerShop.Infrastructure\SneakerShop.Infrastructure.csproj", "{0594E506-C099-4E5D-A2C8-07856BB70606}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SneakerShop.CustomerUI", "src\SneakerShop.CustomerUI\SneakerShop.CustomerUI.csproj", "{3193D1A7-97E7-4884-AF85-A6624CA0A708}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SneakerShop.SharedViewModel", "src\SneakerShop.SharedViewModel\SneakerShop.SharedViewModel.csproj", "{9CEE2F29-B74C-4640-87E9-DA7146FB39F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7936D3C8-F6C0-4438-B4A6-7FDFD8B3263E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7936D3C8-F6C0-4438-B4A6-7FDFD8B3263E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7936D3C8-F6C0-4438-B4A6-7FDFD8B3263E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7936D3C8-F6C0-4438-B4A6-7FDFD8B3263E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DD59383-E839-4BE5-BE4F-AA9DFB80756E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DD59383-E839-4BE5-BE4F-AA9DFB80756E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DD59383-E839-4BE5-BE4F-AA9DFB80756E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DD59383-E839-4BE5-BE4F-AA9DFB80756E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CA77F79-CD49-46EC-82E5-8871AFCF8DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CA77F79-CD49-46EC-82E5-8871AFCF8DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CA77F79-CD49-46EC-82E5-8871AFCF8DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CA77F79-CD49-46EC-82E5-8871AFCF8DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0594E506-C099-4E5D-A2C8-07856BB70606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0594E506-C099-4E5D-A2C8-07856BB70606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0594E506-C099-4E5D-A2C8-07856BB70606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0594E506-C099-4E5D-A2C8-07856BB70606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3193D1A7-97E7-4884-AF85-A6624CA0A708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3193D1A7-97E7-4884-AF85-A6624CA0A708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3193D1A7-97E7-4884-AF85-A6624CA0A708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3193D1A7-97E7-4884-AF85-A6624CA0A708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CEE2F29-B74C-4640-87E9-DA7146FB39F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEE2F29-B74C-4640-87E9-DA7146FB39F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEE2F29-B74C-4640-87E9-DA7146FB39F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEE2F29-B74C-4640-87E9-DA7146FB39F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7936D3C8-F6C0-4438-B4A6-7FDFD8B3263E} = {981FDB5D-0C48-40CB-AFEC-127575D930E0}
+		{5DD59383-E839-4BE5-BE4F-AA9DFB80756E} = {D92DFDDC-EA7F-416E-AD84-40265927E687}
+		{5CA77F79-CD49-46EC-82E5-8871AFCF8DC2} = {981FDB5D-0C48-40CB-AFEC-127575D930E0}
+		{0594E506-C099-4E5D-A2C8-07856BB70606} = {981FDB5D-0C48-40CB-AFEC-127575D930E0}
+		{3193D1A7-97E7-4884-AF85-A6624CA0A708} = {981FDB5D-0C48-40CB-AFEC-127575D930E0}
+		{9CEE2F29-B74C-4640-87E9-DA7146FB39F3} = {981FDB5D-0C48-40CB-AFEC-127575D930E0}
+	EndGlobalSection
+EndGlobal
