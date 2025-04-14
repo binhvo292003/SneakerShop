@@ -1,13 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using SneakerShop.Infrastructure.Data;
+using SneakerShop.Domain.Repositories;
+using SneakerShop.Infrastructure.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add database context with connection string from configuration
+builder.Services.AddDbContext<StoreContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register repositories
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -15,30 +26,27 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
 
-var summaries = new[]
+// Apply migrations and seed database
+try
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-app.MapGet("/weatherforecast", () =>
+    // Apply pending migrations
+    await context.Database.MigrateAsync();
+
+    // Seed initial data
+    await DbInitializer.Initialize(app);
+
+    logger.LogInformation("Database migration and initialization completed successfully");
+}
+catch (Exception ex)
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    app.Logger.LogError(ex, "An error occurred during database migration or initialization");
+}
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
