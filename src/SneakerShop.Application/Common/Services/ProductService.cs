@@ -54,19 +54,24 @@ namespace SneakerShop.Application.Common.Services
             return dto;
         }
 
-        public async Task<bool> UpdateProduct(ProductDTO dto)
+        public async Task<ProductDTO> UpdateProduct(ProductDTO dto)
         {
             var existing = await _repository.GetProductById(dto.Id);
-            if (existing == null) return false;
+            if (existing == null) return null;
 
             existing.Name = dto.Name;
             existing.Description = dto.Description;
             existing.Price = dto.Price;
 
-            await _repository.UpdateProduct(existing);
-            return true;
+            var updated = await _repository.UpdateProduct(existing);
+            return new ProductDTO
+            {
+                Id = updated.Id,
+                Name = updated.Name,
+                Description = updated.Description,
+                Price = updated.Price
+            };
         }
-
         public async Task<bool> DeleteProduct(int id)
         {
             var existing = await _repository.GetProductById(id);

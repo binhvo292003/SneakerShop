@@ -16,40 +16,37 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts()
         {
             return Ok(await _service.GetAllProducts());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDTO>> GetProductById(int id)
+        public async Task<IActionResult> GetProductById(int id)
         {
             var product = await _service.GetProductById(id);
             return product is null ? NotFound() : Ok(product);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> CreateProduct(ProductDTO dto)
+        public async Task<IActionResult> CreateProduct(ProductDTO dto)
         {
             var created = await _service.CreateProduct(dto);
-            return CreatedAtAction(nameof(GetAllProducts), new { id = created.Id }, created);
+            return created is null ? NotFound() : Ok(created);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, ProductDTO dto)
         {
-            if (id != dto.Id)
-                return BadRequest();
-
             var result = await _service.UpdateProduct(dto);
-            return result ? NoContent() : NotFound();
+            return result is null ? NoContent() : Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var result = await _service.DeleteProduct(id);
-            return result ? NoContent() : NotFound();
+            return result ? NoContent() : NotFound(result);
         }
     }
 }

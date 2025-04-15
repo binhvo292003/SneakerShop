@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SneakerShop.Application.Common.Services;
 using SneakerShop.Domain.Repositories;
 using SneakerShop.Infrastructure.Data;
-using SneakerShop.Infrastructure.Data.Repositories;
+using SneakerShop.Infrastructure.Repositories;
 
 namespace SneakerShop.API.Extensions
 {
@@ -15,9 +15,11 @@ namespace SneakerShop.API.Extensions
 
             // Repositories
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();  
 
             // Application services
             services.AddScoped<ProductService>();
+            services.AddScoped<CategoryService>();
 
             return services;
         }

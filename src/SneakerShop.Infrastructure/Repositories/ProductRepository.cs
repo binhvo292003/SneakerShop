@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using SneakerShop.Domain.Entities;
 using SneakerShop.Domain.Repositories;
+using SneakerShop.Infrastructure.Data;
 
-namespace SneakerShop.Infrastructure.Data.Repositories
+namespace SneakerShop.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
