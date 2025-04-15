@@ -2,11 +2,11 @@ namespace SneakerShop.Domain.Entities
 {
     public class ProductVariant : BaseEntity
     {
-        public required string Color { get; set; }
-        public required string Size { get; set; }
+        public string Color { get; set; }
+        public string Size { get; set; }
         public int Stock { get; set; }
-        public virtual required Product Product { get; set; }
-        public virtual ICollection<OrderItem>? OrderItems { get; set; } = null!;
-        public virtual ICollection<CartItem>? CartItems { get; set; } = null!;
+        public virtual Product Product { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = null!;
+        public virtual ICollection<CartItem> CartItems { get; set; } = null!;
     }
 }

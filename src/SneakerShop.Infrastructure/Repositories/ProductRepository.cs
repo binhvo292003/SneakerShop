@@ -29,14 +29,14 @@ namespace SneakerShop.Infrastructure.Data.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Product> CreateAsync(Product product)
+        public async Task<Product> CreateProduct(Product product)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product;
         }
 
-        public async Task<Product> UpdateAsync(Product product)
+        public async Task<Product> UpdateProduct(Product product)
         {
             var existingProduct = await _context.Products.FindAsync(product.Id);
             if (existingProduct == null)
@@ -47,7 +47,7 @@ namespace SneakerShop.Infrastructure.Data.Repositories
             return existingProduct;
         }
 
-        public async Task<bool> DeleteAsync(long id)
+        public async Task<bool> DeleteProduct(long id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null)
