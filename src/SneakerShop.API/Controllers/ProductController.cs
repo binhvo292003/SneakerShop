@@ -62,5 +62,33 @@ namespace SneakerShop.API.Controllers
             var result = await _service.RemoveCategoryFromProduct(productId, categoryId);
             return result is null ? NotFound() : Ok(result);
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchProduct(string searchTerm, int page = 1, int pageSize = 10)
+        {
+            var result = await _service.SearchProduct(searchTerm, page, pageSize);
+            return Ok(result);
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetProductsByFilter([FromQuery] string categoryQuery = null , [FromQuery] string sortBy = null, int page = 1, int pageSize = 10)
+        {
+            List<long> categoryIds = new List<long>();
+            if (!string.IsNullOrEmpty(categoryQuery))
+            {
+                var ids = categoryQuery.Split(',');
+                foreach (var id in ids)
+                {
+                    if (long.TryParse(id, out long categoryId))
+                    {
+                        categoryIds.Add(categoryId);
+                    }
+                }
+            }
+
+            var result = await _service.GetProductsByFilter(categoryIds, sortBy, page, pageSize);
+            return Ok(result);
+        }
+
     }
 }

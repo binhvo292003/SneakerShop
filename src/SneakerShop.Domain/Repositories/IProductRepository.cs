@@ -10,5 +10,8 @@ namespace SneakerShop.Domain.Repositories
         Task<Product> UpdateProduct(Product product);
         Task<bool> DeleteProduct(long id);
         Task<Product> AddCategoryToProduct(long productId, long categoryId);
-        Task<Product> RemoveCategoryFromProduct(long productId, long categoryId);}
+        Task<Product> RemoveCategoryFromProduct(long productId, long categoryId);
+        Task<List<Product>> SearchProduct(string searchTerm, int page, int pageSize);
+        Task<List<Product>> GetProductsByFilter(List<long> categoryIds, string sortBy, int page, int pageSize);
+    }
 }

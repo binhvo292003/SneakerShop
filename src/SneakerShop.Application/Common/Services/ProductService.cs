@@ -107,5 +107,29 @@ namespace SneakerShop.Application.Common.Services
                 Price = product.Price
             };
         }
+
+        public async Task<List<ProductDTO>> SearchProduct(string searchTerm, int page, int pageSize)
+        {
+            var products = await _repository.SearchProduct(searchTerm, page, pageSize);
+            return products.Select(p => new ProductDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price
+            }).ToList();
+        }
+
+        public async Task<List<ProductDTO>> GetProductsByFilter(List<long> categoryIds, string sortBy = null, int page = 1, int pageSize = 10)
+        {
+            var products = await _repository.GetProductsByFilter(categoryIds, sortBy, page, pageSize);
+            return products.Select(p => new ProductDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price
+            }).ToList();
+        }
     }
 }

@@ -101,6 +101,26 @@ namespace SneakerShop.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return product;
         }
+
+        public async Task<List<Product>> SearchProduct(string searchTerm, int page, int pageSize)
+        {
+            return await _context.Products
+                .Include(p => p.Categories)
+                .Where(p => p.Name.Contains(searchTerm))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<List<Product>> GetProductsByFilter(List<long> categoryIds, string sortBy, int page, int pageSize)
+        {
+            return await _context.Products
+                .Include(p => p.Categories)
+                .Where(p => categoryIds.All(rcid => p.Categories.Any(c => c.Id == rcid)))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 
 }
