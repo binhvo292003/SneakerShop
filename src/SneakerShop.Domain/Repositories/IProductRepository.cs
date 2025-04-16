@@ -8,7 +8,7 @@ namespace SneakerShop.Domain.Repositories
         Task<Product> GetProductById(long id);
         Task<Product> CreateProduct(Product product);
         Task<Product> UpdateProduct(Product product);
-        // soft delete product
         Task<bool> DeleteProduct(long id);
-    }
+        Task<Product> AddCategoryToProduct(long productId, long categoryId);
+        Task<Product> RemoveCategoryFromProduct(long productId, long categoryId);}
 }

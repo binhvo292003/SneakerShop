@@ -48,5 +48,19 @@ namespace SneakerShop.API.Controllers
             var result = await _service.DeleteProduct(id);
             return result ? NoContent() : NotFound(result);
         }
+
+        [HttpPost("{productId}/categories/{categoryId}")]
+        public async Task<IActionResult> AddCategoryToProduct(long productId, long categoryId)
+        {
+            var result = await _service.AddCategoryToProduct(productId, categoryId);
+            return result is null ? NotFound() : Ok(result);
+        }
+
+        [HttpDelete("{productId}/categories/{categoryId}")]
+        public async Task<IActionResult> RemoveCategoryFromProduct(long productId, long categoryId)
+        {
+            var result = await _service.RemoveCategoryFromProduct(productId, categoryId);
+            return result is null ? NotFound() : Ok(result);
+        }
     }
 }

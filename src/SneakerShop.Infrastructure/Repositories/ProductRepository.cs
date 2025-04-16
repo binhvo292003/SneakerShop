@@ -58,6 +58,49 @@ namespace SneakerShop.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+        public async Task<Product> AddCategoryToProduct(long productId, long categoryId)
+        {
+            // add include(p => p.Categories) in order to load the categories relation
+            var product = await _context.Products
+                        .Include(p => p.Categories)
+                        .FirstOrDefaultAsync(p => p.Id == productId);
+            if (product == null)
+                return null;
+
+            var category = await _context.Categories
+                        .FirstOrDefaultAsync(c => c.Id == categoryId);
+            if (category == null)
+                return null;
+
+            if (product.Categories == null)
+                product.Categories = new List<Category>();
+
+            if (!product.Categories.Any(c => c.Id == categoryId))
+                product.Categories.Add(category);
+
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<Product> RemoveCategoryFromProduct(long productId, long categoryId)
+        {
+            var product = await _context.Products
+                        .Include(p => p.Categories)
+                        .FirstOrDefaultAsync(p => p.Id == productId);
+            if (product == null)
+                return null;
+
+            var category = await _context.Categories
+                        .FirstOrDefaultAsync(c => c.Id == categoryId);
+            if (category == null)
+                return null;
+
+            if (product.Categories != null && product.Categories.Any(c => c.Id == categoryId))
+                product.Categories.Remove(category);
+
+            await _context.SaveChangesAsync();
+            return product;
+        }
     }
 
 }

@@ -80,5 +80,32 @@ namespace SneakerShop.Application.Common.Services
             await _repository.DeleteProduct(id);
             return true;
         }
+        public async Task<ProductDTO> AddCategoryToProduct(long productId, long categoryId)
+        {
+            var product = await _repository.AddCategoryToProduct(productId, categoryId);
+            if (product == null) return null;
+
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price
+            };
+        }
+
+        public async Task<ProductDTO> RemoveCategoryFromProduct(long productId, long categoryId)
+        {
+            var product = await _repository.RemoveCategoryFromProduct(productId, categoryId);
+            if (product == null) return null;
+
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price
+            };
+        }
     }
 }
