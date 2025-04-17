@@ -22,4 +22,11 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/home");
+    return Task.CompletedTask;
+});
+
+
 app.Run();

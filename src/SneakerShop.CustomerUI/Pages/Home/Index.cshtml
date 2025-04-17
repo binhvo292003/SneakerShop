@@ -1,0 +1,67 @@
+@page "/home" 
+@model SneakerShop.CustomerUI.Pages.Home.Index
+@{
+    ViewData["Title"] = "Index";
+    
+}
+
+<div class="carousel-wrapper w-100">
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://picsum.photos/id/1018/1000/400" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://picsum.photos/id/1018/1000/400" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://picsum.photos/id/1018/1000/400" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<div class="container p-0">
+    <h2>New Arrival</h2>
+    <div>
+        <img src="https://picsum.photos/id/1018/1000/400" class="d-block w-100" alt="...">
+    </div>
+</div>
+
+<div class="container p-0">
+    <h2 class="py-3">Gender</h2>
+    <div class="container-fluid">
+        <div class="row g-4">
+            <!-- for man -->
+            <div class="col-12 col-md-6 p-0">
+                <div class="position-relative">
+                    <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold fs-4">Men</div>
+                    <img src="https://picsum.photos/id/1018/1000/400" class="img-fluid" alt="Men's collection">
+                </div>
+            </div>
+
+            <!-- for woman -->
+            <div class="col-12 col-md-6 p-0">
+                <div class="position-relative">
+                    <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold fs-4">Women</div>
+                    <img src="https://picsum.photos/id/1018/1000/400" class="img-fluid" alt="Women's collection">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container p-0">
+    <h2>Accessories</h2>
+    <div>
+        <img src="https://picsum.photos/id/1018/1000/400" class="d-block w-100" alt="...">
+    </div>
+</div>
