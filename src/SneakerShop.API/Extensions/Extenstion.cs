@@ -15,7 +15,7 @@ namespace SneakerShop.API.Extensions
 
             // Repositories
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();  
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             // Application services
             services.AddScoped<ProductService>();
@@ -26,6 +26,17 @@ namespace SneakerShop.API.Extensions
 
         public static IServiceCollection AddApiServices(this IServiceCollection services)
         {
+
+            services.AddCors(options =>
+                {
+                    options.AddPolicy("AllowSpecificOrigins",
+                        builder =>
+                        {
+                            builder.WithOrigins("https://localhost:7183", "http://localhost:5142")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                        });
+                });
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

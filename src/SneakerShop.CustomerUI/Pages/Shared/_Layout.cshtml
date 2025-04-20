@@ -10,63 +10,87 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/_Layout.css" asp-append-version="true" />
+
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">SneakerShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLastest" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Latest
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownLastest">
-                                <li><a class="dropdown-item" href="/product-list">Lastest 1</a></li>
-                                <li><a class="dropdown-item" href="/product-list">Lastest 2</a></li>
-                                <li><a class="dropdown-item" href="/product-list">Lastest 3</a></li>
-                            </ul>
-                        </li>
+            <div class="container-fluid d-flex justify-content-around align-items-center">
+                <a class="navbar-brand" asp-page="/Home/Index">
+                    <img src="~/images/logo.png" alt="Logo" width="40" height="40">
+                    <span class="fw-bold fs-4">SneakerShop</span>
+                </a>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMan" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Man
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMan">
-                                <li><a class="dropdown-item" href="/product-list">Man 1</a></li>
-                                <li><a class="dropdown-item" href="/product-list">Man 2</a></li>
-                                <li><a class="dropdown-item" href="/product-list">Man 3</a></li>
-                            </ul>
-                        </li>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" asp-page="/Product/ProductList">
+                            Latest
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" asp-page="/Product/ProductList">
+                            Men
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="menDropdown">
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Clothing</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Shirts</a></li>
+                                    <li><a class="dropdown-item" href="#">Pants</a></li>
+                                    <li><a class="dropdown-item" href="#">Jackets</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Accessories</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Watches</a></li>
+                                    <li><a class="dropdown-item" href="#">Belts</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Sale</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" asp-page="/Product/ProductList">
+                            Women
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="menDropdown">
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Clothing</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Shirts</a></li>
+                                    <li><a class="dropdown-item" href="#">Pants</a></li>
+                                    <li><a class="dropdown-item" href="#">Jackets</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Accessories</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Watches</a></li>
+                                    <li><a class="dropdown-item" href="#">Belts</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Sale</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownWoman" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Woman
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownWoman">
-                                <li><a class="dropdown-item" href="/product-list">Woman 1</a></li>
-                                <li><a class="dropdown-item" href="/product-list">Woman 2</a></li>
-                                <li><a class="dropdown-item" href="/product-list">Woman 3</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
+
+                <form class="d-flex" role="search" method="get" asp-page="/Search/Index">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        name="query">
+                </form>
             </div>
         </nav>
+
     </header>
     <div class="container-fluid p-0">
         <main role="main" class="pb-3">
