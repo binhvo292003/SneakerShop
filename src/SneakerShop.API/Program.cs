@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using SneakerShop.API.Extensions;
+using SneakerShop.Application.Settings;
 using SneakerShop.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddApiServices();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 var app = builder.Build();
 

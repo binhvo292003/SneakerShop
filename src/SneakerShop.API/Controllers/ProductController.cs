@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SneakerShop.Application.Common.Mappings;
 using SneakerShop.Application.Common.Services;
+using SneakerShop.SharedViewModel.Requests.Product;
 
 namespace SneakerShop.API.Controllers
 {
@@ -29,16 +30,16 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(ProductDTO dto)
+        public async Task<IActionResult> CreateProduct(CreateProductRequest request)
         {
-            var created = await _service.CreateProduct(dto);
+            var created = await _service.CreateProduct(request);
             return created is null ? NotFound() : Ok(created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, ProductDTO dto)
+        public async Task<IActionResult> UpdateProduct(int id, UpdateProductRequest request)
         {
-            var result = await _service.UpdateProduct(dto);
+            var result = await _service.UpdateProduct(request);
             return result is null ? NoContent() : Ok(result);
         }
 

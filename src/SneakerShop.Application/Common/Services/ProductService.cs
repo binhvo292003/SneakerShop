@@ -1,21 +1,29 @@
 using SneakerShop.Application.Common.Mappings;
 using SneakerShop.Domain.Entities;
 using SneakerShop.Domain.Repositories;
+using SneakerShop.SharedViewModel.Requests.Product;
+using SneakerShop.SharedViewModel.Responses.Product;
 
 namespace SneakerShop.Application.Common.Services
 {
     public class ProductService
     {
-        private readonly IProductRepository _repository;
+        private readonly IProductRepository _productRepository;
+        private readonly IProductImageRepository _productImageRepository;
+        private readonly ProductImageService _productImageService;
 
-        public ProductService(IProductRepository repository)
+        public ProductService(IProductRepository productRepository,
+                        IProductImageRepository productImageRepository,
+                        ProductImageService productImageService)
         {
-            _repository = repository;
+            _productRepository = productRepository;
+            _productImageRepository = productImageRepository;
+            _productImageService = productImageService;
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAllProducts()
         {
-            var products = await _repository.GetAllProducts();
+            var products = await _productRepository.GetAllProducts();
             return products.Select(p => new ProductDTO
             {
                 Id = p.Id,
@@ -27,7 +35,7 @@ namespace SneakerShop.Application.Common.Services
 
         public async Task<ProductDTO> GetProductById(int id)
         {
-            var product = await _repository.GetProductById(id);
+            var product = await _productRepository.GetProductById(id);
             if (product == null) return null;
 
             return new ProductDTO
@@ -39,50 +47,94 @@ namespace SneakerShop.Application.Common.Services
             };
         }
 
-        public async Task<ProductDTO> CreateProduct(ProductDTO dto)
+        public async Task<ProductResponse> CreateProduct(CreateProductRequest request)
         {
             var product = new Product
             {
-                Name = dto.Name,
-                Description = dto.Description,
-                Price = dto.Price
+                Name = request.Name,
+                Description = request.Description,
+                Price = request.Price
             };
 
-            var result = await _repository.CreateProduct(product);
 
-            dto.Id = result.Id;
-            return dto;
+            var result = await _productRepository.CreateProduct(product);
+
+            var pr = new ProductResponse
+            {
+                Id = result.Id,
+                Name = result.Name,
+                Description = result.Description,
+                Price = result.Price
+
+            };
+
+            if (request.ImageUrls != null)
+            {
+                var imageUrls = new List<ProductImage>();
+                foreach (var imageUrl in request.ImageUrls)
+                {
+                    var productImage = new ProductImage
+                    {
+                        ImageUrl = imageUrl,
+                        ProductId = result.Id
+                    };
+                    imageUrls.Add(productImage);
+                }
+                pr.ImageUrls = imageUrls.Select(i => i.ImageUrl).ToList();
+            }
+
+            return pr;
         }
 
-        public async Task<ProductDTO> UpdateProduct(ProductDTO dto)
+        public async Task<ProductResponse> UpdateProduct(UpdateProductRequest request)
         {
-            var existing = await _repository.GetProductById(dto.Id);
-            if (existing == null) return null;
+            var existingProduct = await _productRepository.GetProductById(request.Id);
+            if (existingProduct == null) return null;
 
-            existing.Name = dto.Name;
-            existing.Description = dto.Description;
-            existing.Price = dto.Price;
+            await _productImageRepository.RemoveProductImagesByProductId(existingProduct.Id);
 
-            var updated = await _repository.UpdateProduct(existing);
-            return new ProductDTO
+            var newImageUrls = new List<string>(); 
+
+            if (request.ImageUrls != null && request.ImageUrls.Any())
+            {
+                foreach (var file in request.ImageUrls)
+                {
+                    var productImage = await _productImageService.GetProductImageByPublicId(file);
+                    if (productImage != null)
+                    {
+                        productImage.ProductId = existingProduct.Id;
+                        await _productImageRepository.UpdateProductImage(productImage);
+                        newImageUrls.Add(productImage.ImageUrl);
+                    }
+                }   
+            }
+
+            existingProduct.Name = request.Name;
+            existingProduct.Description = request.Description;
+            existingProduct.Price = request.Price;
+
+            var updated = await _productRepository.UpdateProduct(existingProduct);
+
+            return new ProductResponse
             {
                 Id = updated.Id,
                 Name = updated.Name,
                 Description = updated.Description,
-                Price = updated.Price
+                Price = updated.Price,
+                ImageUrls = newImageUrls 
             };
         }
         public async Task<bool> DeleteProduct(int id)
         {
-            var existing = await _repository.GetProductById(id);
+            var existing = await _productRepository.GetProductById(id);
             if (existing == null) return false;
 
-            await _repository.DeleteProduct(id);
+            await _productRepository.DeleteProduct(id);
             return true;
         }
         public async Task<ProductDTO> AddCategoryToProduct(long productId, long categoryId)
         {
-            var product = await _repository.AddCategoryToProduct(productId, categoryId);
+            var product = await _productRepository.AddCategoryToProduct(productId, categoryId);
             if (product == null) return null;
 
             return new ProductDTO
@@ -96,7 +148,7 @@ namespace SneakerShop.Application.Common.Services
 
         public async Task<ProductDTO> RemoveCategoryFromProduct(long productId, long categoryId)
         {
-            var product = await _repository.RemoveCategoryFromProduct(productId, categoryId);
+            var product = await _productRepository.RemoveCategoryFromProduct(productId, categoryId);
             if (product == null) return null;
 
             return new ProductDTO
@@ -110,7 +162,7 @@ namespace SneakerShop.Application.Common.Services
 
         public async Task<List<ProductDTO>> SearchProduct(string searchTerm, int page, int pageSize)
         {
-            var products = await _repository.SearchProduct(searchTerm, page, pageSize);
+            var products = await _productRepository.SearchProduct(searchTerm, page, pageSize);
             return products.Select(p => new ProductDTO
             {
                 Id = p.Id,
@@ -122,7 +174,7 @@ namespace SneakerShop.Application.Common.Services
 
         public async Task<List<ProductDTO>> GetProductsByFilter(List<long> categoryIds, string sortBy = null, int page = 1, int pageSize = 10)
         {
-            var products = await _repository.GetProductsByFilter(categoryIds, sortBy, page, pageSize);
+            var products = await _productRepository.GetProductsByFilter(categoryIds, sortBy, page, pageSize);
             return products.Select(p => new ProductDTO
             {
                 Id = p.Id,

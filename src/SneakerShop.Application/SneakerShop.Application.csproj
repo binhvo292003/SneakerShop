@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SneakerShop.Domain\SneakerShop.Domain.csproj" />
+    <ProjectReference Include="..\SneakerShop.SharedViewModel\SneakerShop.SharedViewModel.csproj" /> 
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.27.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
 
 </Project>

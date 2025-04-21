@@ -5,13 +5,11 @@ using SneakerShop.Infrastructure.Data;
 
 namespace SneakerShop.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : BaseRepository, IProductRepository
     {
-        private readonly StoreContext _context;
 
-        public ProductRepository(StoreContext context)
+        public ProductRepository(StoreContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<List<Product>> GetAllProducts()
