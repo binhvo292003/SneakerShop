@@ -10,5 +10,7 @@ namespace SneakerShop.Domain.Repositories
         public Task<ProductImage> UpdateProductImage(ProductImage productImage);
         // soft delete product image
         public Task<bool> DeleteProductImage(long id);
+        public Task RemoveProductImagesByProductId(long productId);
+        public Task<ProductImage> FindProductImageByUrl(string publicId);
     }
 }
