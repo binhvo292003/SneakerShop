@@ -5,12 +5,10 @@ using SneakerShop.Infrastructure.Data;
 
 namespace SneakerShop.Infrastructure.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : BaseRepository, ICategoryRepository
     {
-        private readonly StoreContext _context;
-        public CategoryRepository(StoreContext context)
+        public CategoryRepository(StoreContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<List<Category>> GetAllCategories()
@@ -29,7 +27,7 @@ namespace SneakerShop.Infrastructure.Repositories
         {
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
-            
+
             return category;
         }
 
