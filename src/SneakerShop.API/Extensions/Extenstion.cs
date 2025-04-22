@@ -17,11 +17,15 @@ namespace SneakerShop.API.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
 
             // Application services
             services.AddScoped<ProductService>();
             services.AddScoped<CategoryService>();
             services.AddScoped<ProductImageService>();
+            services.AddScoped<AuthService>();
+            services.AddScoped<ReviewService>();
 
             return services;
         }
