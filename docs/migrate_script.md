@@ -1,0 +1,2 @@
+- dotnet ef migrations add <MigrationName> --project src/SneakerShop.Infrastructure --startup-project src/SneakerShop.API
+- dotnet ef database update --project src/SneakerShop.Infrastructure --startup-project src/SneakerShop.API

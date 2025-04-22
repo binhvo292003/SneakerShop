@@ -12,8 +12,8 @@ using SneakerShop.Infrastructure.Data;
 namespace SneakerShop.Infrastructure.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250421084741_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250422031105_Migration_22_4")]
+    partial class Migration_22_4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,6 +259,12 @@ namespace SneakerShop.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
