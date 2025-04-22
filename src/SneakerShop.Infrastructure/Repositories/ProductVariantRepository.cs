@@ -43,9 +43,15 @@ namespace SneakerShop.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ProductVariant> UpdateProductVariant(ProductVariant productVariant)
+        public async Task<ProductVariant> UpdateProductVariant(ProductVariant productVariant)
         {
-            throw new NotImplementedException();
+            var existingProductVariant = await _context.ProductVariants.FindAsync(productVariant.Id);
+            if (existingProductVariant == null)
+                return null;
+
+            _context.Entry(existingProductVariant).CurrentValues.SetValues(productVariant);
+            await _context.SaveChangesAsync();
+            return existingProductVariant;
         }
     }
 }

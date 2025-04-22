@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SneakerShop.Domain.Entities;
 using SneakerShop.Domain.Repositories;
 using SneakerShop.Infrastructure.Data;
@@ -21,9 +22,10 @@ namespace SneakerShop.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Review>> GetAllReviewsByProductId(long productId)
+        public async Task<List<Review>> GetAllReviewsByProductId(long productId)
         {
-            throw new NotImplementedException();
+            var reviews = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
+            return reviews;
         }
 
         public Task<Review> GetReviewById(long id)

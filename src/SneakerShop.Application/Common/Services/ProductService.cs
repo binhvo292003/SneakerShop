@@ -11,13 +11,16 @@ namespace SneakerShop.Application.Common.Services
         private readonly IProductRepository _productRepository;
         private readonly IProductImageRepository _productImageRepository;
         private readonly ProductImageService _productImageService;
+        private readonly IProductVariantRepository _productVariantRepository;
 
         public ProductService(IProductRepository productRepository,
                         IProductImageRepository productImageRepository,
+                        IProductVariantRepository productVariantRepository,
                         ProductImageService productImageService)
         {
             _productRepository = productRepository;
             _productImageRepository = productImageRepository;
+            _productVariantRepository = productVariantRepository;
             _productImageService = productImageService;
         }
 
@@ -93,7 +96,7 @@ namespace SneakerShop.Application.Common.Services
 
             await _productImageRepository.RemoveProductImagesByProductId(existingProduct.Id);
 
-            var newImageUrls = new List<string>(); 
+            var newImageUrls = new List<string>();
 
             if (request.ImageUrls != null && request.ImageUrls.Any())
             {
@@ -106,7 +109,7 @@ namespace SneakerShop.Application.Common.Services
                         await _productImageRepository.UpdateProductImage(productImage);
                         newImageUrls.Add(productImage.ImageUrl);
                     }
-                }   
+                }
             }
 
             existingProduct.Name = request.Name;
@@ -121,7 +124,7 @@ namespace SneakerShop.Application.Common.Services
                 Name = updated.Name,
                 Description = updated.Description,
                 Price = updated.Price,
-                ImageUrls = newImageUrls 
+                ImageUrls = newImageUrls
             };
         }
         public async Task<bool> DeleteProduct(int id)
@@ -182,6 +185,30 @@ namespace SneakerShop.Application.Common.Services
                 Description = p.Description,
                 Price = p.Price
             }).ToList();
+        }
+
+        public async Task<bool> AddProductVariant(AddProductVariantRequest request)
+        {
+            var productVariant = new ProductVariant
+            {
+                Size = request.Size,
+                Stock = request.Stock,
+                ProductId = request.ProductId
+            };
+            var result = await _productVariantRepository.CreateProductVariant(productVariant);
+
+            return result != null;
+        }
+
+        public async Task<bool> UpdateStock(long productVariantId, int stock)
+        {
+            var productVariant = await _productVariantRepository.GetProductVariantById(productVariantId);
+            if (productVariant == null) return false;
+
+            productVariant.Stock = stock;
+            var result = await _productVariantRepository.UpdateProductVariant(productVariant);
+
+            return result != null;
         }
     }
 }

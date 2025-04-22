@@ -91,5 +91,12 @@ namespace SneakerShop.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost("{productId}/variants")]
+        public async Task<IActionResult> AddProductVariant([FromBody] AddProductVariantRequest request)
+        {
+            var result = await _service.AddProductVariant(request);
+            return result is false ? NotFound() : Ok(result);
+        }
+
     }
 }

@@ -26,7 +26,6 @@ namespace SneakerShop.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreContext).Assembly);
-
         }
     }
 }

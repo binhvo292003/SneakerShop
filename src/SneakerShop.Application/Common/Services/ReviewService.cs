@@ -21,6 +21,11 @@ namespace SneakerShop.Application.Common.Services
 
         public async Task<bool> CreateReview(CreateReviewRequest request)
         {
+            if(request.Rating < 1 || request.Rating > 5)
+            {
+                throw new ArgumentException("Rating must be between 1 and 5.");
+            }
+
             var review = new Review
             {
                 ProductId = request.ProductId,

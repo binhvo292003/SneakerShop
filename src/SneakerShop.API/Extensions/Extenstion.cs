@@ -19,6 +19,7 @@ namespace SneakerShop.API.Extensions
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
 
             // Application services
             services.AddScoped<ProductService>();
