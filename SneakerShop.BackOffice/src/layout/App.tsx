@@ -1,14 +1,16 @@
-import { useState } from "react";
-import Header from "./Header";
-import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import { useState } from 'react';
+import Header from './Header';
+import { Outlet } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 function App() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const isDesktop = useMediaQuery('(min-width: 1024px)');
 
     return (
         <div className="flex h-screen bg-gray-100 dark:bg-gray-950">
-            <Sidebar isOpen={true} onClose={() => setSidebarOpen(false)} />
+            <Sidebar isOpen={isDesktop || sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <div className="flex flex-col flex-1 overflow-hidden">
                 <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />

@@ -2,9 +2,7 @@ import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -13,147 +11,133 @@ import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { Edit, Trash2 } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 
-const invoices = [
+const dummyData = [
     {
-        invoice: 'INV001',
-        paymentStatus: 'Paid',
-        totalAmount: '$250.00',
-        paymentMethod: 'Credit Card',
+        id: 1,
+        name: 'Sneaker Nike Air',
+        price: 100.0,
     },
     {
-        invoice: 'INV002',
-        paymentStatus: 'Pending',
-        totalAmount: '$150.00',
-        paymentMethod: 'PayPal',
+        id: 2,
+        name: 'Sneaker Adidas',
+        price: 120.0,
     },
     {
-        invoice: 'INV003',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$350.00',
-        paymentMethod: 'Bank Transfer',
+        id: 3,
+        name: 'Sneaker Puma',
+        price: 80.0,
     },
     {
-        invoice: 'INV004',
-        paymentStatus: 'Paid',
-        totalAmount: '$450.00',
-        paymentMethod: 'Credit Card',
+        id: 4,
+        name: 'Sneaker Reebok',
+        price: 90.0,
     },
     {
-        invoice: 'INV005',
-        paymentStatus: 'Paid',
-        totalAmount: '$550.00',
-        paymentMethod: 'PayPal',
-    },
-    {
-        invoice: 'INV006',
-        paymentStatus: 'Pending',
-        totalAmount: '$200.00',
-        paymentMethod: 'Bank Transfer',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
+        id: 5,
+        name: 'Sneaker New Balance',
+        price: 110.0,
     },
 ];
 
-export default function ProductPage() {
-    const [categories, setCategories] = useState([
-        { id: 1, name: 'Electronics' },
-        { id: 2, name: 'Books' },
-    ]);
+const categories = [
+    { id: 1, name: 'Basketball', products: 42, active: true },
+    { id: 2, name: 'Running', products: 38, active: true },
+    { id: 3, name: 'Lifestyle', products: 65, active: true },
+    { id: 4, name: 'Skateboarding', products: 24, active: true },
+    { id: 5, name: 'Tennis', products: 18, active: true },
+    { id: 6, name: 'Training', products: 31, active: true },
+    { id: 7, name: 'Limited Edition', products: 12, active: false },
+];
 
+const productVariants = [
+    { id: 1, size: 'S', stock: 10 },
+    { id: 1, size: 'M', stock: 10 },
+    { id: 1, size: 'L', stock: 10 },
+];
+
+interface ProductItem {
+    id: number;
+    name: string;
+    price: number;
+}
+
+export default function ProductPage() {
     const [open, setOpen] = useState(false);
-    const [editing, setEditing] = useState(null);
+    const [editing, setEditing] = useState<ProductItem | null>(null);
     const [name, setName] = useState('');
 
-    const resetForm = () => {
-        setName('');
-        setEditing(null);
-        setOpen(false);
+    const handleEdit = (product: ProductItem) => {
+        setEditing(product);
+        setName(product.name);
+        setOpen(true);
     };
 
-    const columns = [
-        { key: 'id', header: 'ID' },
-        { key: 'name', header: 'Name' },
-    ];
+    const handleNew = () => {
+        setEditing(null);
+        setName('');
+        setOpen(true);
+    };
 
+    const handleSubmit = () => {
+        if (editing) {
+            console.log('Editing category:', { id: editing.id, name });
+        } else {
+            console.log('Adding new category:', { name });
+        }
+        setOpen(false);
+    };
     return (
         <div className="">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Product Categories</h2>
-                <Button onClick={() => setOpen(true)}>Add Category</Button>
-            </div>{' '}
+                <h2 className="text-xl font-bold">Product</h2>
+                <Button onClick={handleNew}>Add Product</Button>
+            </div>
             <Table>
-                <TableCaption>A list of your recent invoices.</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">Invoice</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Method</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead className="w-[100px]">Id</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Details</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {invoices.map((invoice) => (
-                        <TableRow key={invoice.invoice}>
-                            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                            <TableCell>{invoice.paymentStatus}</TableCell>
-                            <TableCell>{invoice.paymentMethod}</TableCell>
-                            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                    {dummyData.map((data) => (
+                        <TableRow key={data.id}>
+                            <TableCell className="font-medium">{data.id}</TableCell>
+                            <TableCell>{data.name}</TableCell>
+                            <TableCell>{data.price}</TableCell>
+                            <TableCell className="text-right">
+                                <TableCell>
+                                    <div className="flex justify-end gap-2">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-8 w-8 p-0"
+                                            onClick={() => handleEdit(data)}
+                                        >
+                                            <Edit className="h-4 w-4" />
+                                            <span className="sr-only">Edit Product</span>
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:bg-red-50"
+                                            onClick={() => console.log('Delete category:', data.id)}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                            <span className="sr-only">Delete Product</span>
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TableCell colSpan={3}>Total</TableCell>
-                        <TableCell className="text-right">$2,500.00</TableCell>
-                    </TableRow>
-                </TableFooter>
             </Table>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
@@ -176,7 +160,48 @@ export default function ProductPage() {
                         placeholder="Price"
                         className="my-2"
                     />
-                    // List categoriese
+                    <div className="grid gap-2">
+                        <Label className="required">Categories (Select at least one)</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                            {categories
+                                .filter((category) => category.active)
+                                .map((category) => (
+                                    <div key={category.id} className="flex items-center space-x-2">
+                                        <Checkbox id={`edit-category-${category.id}`} />
+                                        <Label
+                                            htmlFor={`edit-category-${category.id}`}
+                                            className="text-sm font-normal"
+                                        >
+                                            {category.name}
+                                        </Label>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                    <div className="grid gap-2 mt-4">
+                        <Label className="required">Variant</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                            {productVariants.map((variant) => (
+                                <div key={variant.id} className="flex items-center space-x-2">
+                                    <Checkbox id={`edit-variant-${variant.id}`} />
+                                    <Label
+                                        htmlFor={`edit-variant-${variant.id}`}
+                                        className="text-sm font-normal"
+                                    >
+                                        {`Size: ${variant.size}, Stock: ${variant.stock}`}
+                                    </Label>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <Button size="sm" onClick={() => {}}>
+                            Add Variant
+                    </Button>
+
+                    <Button onClick={handleSubmit}>
+                        {editing ? 'Save Changes' : 'Add Category'}
+                    </Button>
                 </DialogContent>
             </Dialog>
         </div>

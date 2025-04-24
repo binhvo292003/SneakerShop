@@ -4,17 +4,13 @@ import type React from 'react';
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import {
     LayoutDashboard,
     Users,
     ShoppingCart,
-    Settings,
     BarChart3,
     FileText,
-    HelpCircle,
-    X,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -43,7 +39,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {
             title: 'Users',
             icon: <Users className="h-5 w-5" />,
-            href: '/users',
+            href: '/user',
         },
         {
             title: 'Products',
@@ -51,25 +47,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             href: '/product',
         },
         {
-            title: 'Analytics',
+            title: 'Categories',
             icon: <BarChart3 className="h-5 w-5" />,
-            href: '/analytics',
+            href: '/category',
         },
         {
-            title: 'Reports',
+            title: 'Orders',
             icon: <FileText className="h-5 w-5" />,
-            href: '/reports',
-        },
-        {
-            title: 'Settings',
-            icon: <Settings className="h-5 w-5" />,
-            href: '/settings',
-        },
-        {
-            title: 'Help',
-            icon: <HelpCircle className="h-5 w-5" />,
-            href: '/help',
-        },
+            href: '/order',
+        }
     ];
 
     const sidebarContent = (
@@ -81,42 +67,35 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     onClick={() => setActiveItem('Dashboard')}
                 >
                     <div className="h-7 w-7 rounded-md bg-primary flex items-center justify-center text-primary-foreground">
-                        BO
+                        SS
                     </div>
-                    <span>Back Office</span>
+                    <span>Sneaker Shop</span>
                 </Link>
-                {!isDesktop && (
-                    <Button variant="ghost" size="icon" className="ml-auto" onClick={onClose}>
-                        <X className="h-5 w-5" />
-                        <span className="sr-only">Close sidebar</span>
-                    </Button>
-                )}
             </div>
-                <nav className="grid gap-1">
-                    {sidebarItems.map((item) => (
-                        <Link
-                            key={item.title}
-                            to={item.href}
-                            onClick={() => {
-                                setActiveItem(item.title);
-                                if (!isDesktop) onClose();
-                            }}
-                            className={cn(
-                                'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                                activeItem === item.title
-                                    ? 'bg-accent text-accent-foreground'
-                                    : 'transparent'
-                            )}
-                        >
-                            {item.icon}
-                            {item.title}
-                        </Link>
-                    ))}
-                </nav>
+            <nav className="grid gap-1">
+                {sidebarItems.map((item) => (
+                    <Link
+                        key={item.title}
+                        to={item.href}
+                        onClick={() => {
+                            setActiveItem(item.title);
+                            if (!isDesktop) onClose();
+                        }}
+                        className={cn(
+                            'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+                            activeItem === item.title
+                                ? 'bg-accent text-accent-foreground'
+                                : 'transparent'
+                        )}
+                    >
+                        {item.icon}
+                        {item.title}
+                    </Link>
+                ))}
+            </nav>
         </>
     );
 
-    // For mobile: use Sheet component
     if (!isDesktop) {
         return (
             <Sheet open={isOpen} onOpenChange={onClose}>
@@ -127,7 +106,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         );
     }
 
-    // For desktop: regular sidebar
     return (
         <div
             className={cn(

@@ -113,7 +113,7 @@ export default function DashboardPage() {
     return (
         <div className="flex flex-col gap-4">
             <div>
-                <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+                <h1 className="text-2xl font-bold tracking-tight">Sneaker Dashboard</h1>
                 <p className="text-muted-foreground">
                     Welcome back! Here's an overview of your sneaker business.
                 </p>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
                         </Card>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                    {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                         <Card className="col-span-4">
                             <CardHeader>
                                 <CardTitle>Recent Orders</CardTitle>
@@ -289,26 +289,26 @@ export default function DashboardPage() {
                                 </Button>
                             </CardFooter>
                         </Card>
-                    </div>
+                    </div> */}
                 </TabsContent>
 
                 <TabsContent
                     value="inventory"
-                    className="flex items-center justify-center text-muted-foreground"
+                    className="h-[400px] flex items-center justify-center text-muted-foreground"
                 >
                     Detailed inventory management content would go here
                 </TabsContent>
 
                 <TabsContent
                     value="sales"
-                    className="flex items-center justify-center text-muted-foreground"
+                    className="h-[400px] flex items-center justify-center text-muted-foreground"
                 >
                     Detailed sales reports and analytics would go here
                 </TabsContent>
 
                 <TabsContent
                     value="customers"
-                    className="flex items-center justify-center text-muted-foreground"
+                    className="h-[400px] flex items-center justify-center text-muted-foreground"
                 >
                     Customer management and analytics would go here
                 </TabsContent>
