@@ -1,13 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using SneakerShop.API.Extensions;
+using SneakerShop.Application.Common.Mappings;
 using SneakerShop.Application.Settings;
 using SneakerShop.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(MappingProfile)); 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddApiServices();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 
 var app = builder.Build();
 
@@ -20,6 +34,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors("AllowReactApp");
+
 
 try
 {

@@ -35,15 +35,15 @@ namespace SneakerShop.API.Extensions
         {
 
             services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigins", builder =>
                 {
-                    options.AddPolicy("AllowSpecificOrigins",
-                        builder =>
-                        {
-                            builder.WithOrigins("https://localhost:7183", "http://localhost:5142")
-                                .AllowAnyMethod()
-                                .AllowAnyHeader();
-                        });
+                    builder.WithOrigins("http://localhost:3000")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
                 });
+            });
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
