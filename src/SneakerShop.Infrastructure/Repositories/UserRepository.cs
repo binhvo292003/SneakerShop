@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SneakerShop.Domain.Entities;
 using SneakerShop.Domain.Repositories;
 using SneakerShop.Infrastructure.Data;
@@ -37,14 +38,14 @@ namespace SneakerShop.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public Task<User> GetUserById(long id)
+        public async Task<User> GetUserById(long id)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FindAsync(id);
         }
 
         public Task<User> GetUserByUsername(string username)

@@ -7,7 +7,9 @@
 
 <div class="container-fluid p-0">
     <div>
-        <img src="~/images/hero.png" class="d-block w-100" alt="...">
+        <a asp-area="" asp-page="/Product/ProductList" class="text-decoration-none">
+            <img src="~/images/hero.png" class="d-block w-100" alt="...">
+        </a>
     </div>
 </div>
 
@@ -49,8 +51,8 @@
 </div>
 <div class="row mt-2">
     <div class="col-12"></div>
-        <label class="col-form-label">Select File</label>
-        <input asp-for="File" class="form-control" />
-        <span asp-validation-for="File" class="text-danger"></span>
-    </div>
+    <label class="col-form-label">Select File</label>
+    <input asp-for="File" class="form-control" />
+    <span asp-validation-for="File" class="text-danger"></span>
+</div>
 </div>

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SneakerShop.Application.Common.Mappings;
 using SneakerShop.Application.Common.Services;
@@ -17,6 +18,7 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllProducts()
         {
             return Ok(await _service.GetAllProducts());
@@ -30,7 +32,7 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(CreateProductRequest request)
+        public async Task<IActionResult> CreateProduct([FromBody]CreateProductRequest request)
         {
             var created = await _service.CreateProduct(request);
             return created is null ? NotFound() : Ok(created);

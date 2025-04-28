@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace SneakerShop.SharedViewModel.Requests.Product
 {
     public class CreateProductRequest
@@ -5,6 +7,6 @@ namespace SneakerShop.SharedViewModel.Requests.Product
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public List<string> ImageUrls { get; set; } = new List<string>();
+        public List<IFormFile> ImageUrls { get; set; } = new List<IFormFile>();
     }
 }

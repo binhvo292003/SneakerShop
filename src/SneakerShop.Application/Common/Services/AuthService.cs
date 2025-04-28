@@ -1,3 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using CloudinaryDotNet.Actions;
+using Microsoft.IdentityModel.Tokens;
 using SneakerShop.Domain.Entities;
 using SneakerShop.Domain.Repositories;
 
@@ -30,15 +35,11 @@ namespace SneakerShop.Application.Common.Services
             return true;
         }
 
-        public async Task<bool> LoginUser(string email, string password)
+        public async Task<User> LoginUser(string email, string password)
         {
             var user = await _userRepository.GetUserByEmail(email);
 
-            if (user == null || user.Password != password)
-            {
-                return false;
-            }
-            return true;
+            return user != null && user.Password == password ? user : null;
         }
 
         public async Task<bool> LogoutUser(long userId)
@@ -47,6 +48,27 @@ namespace SneakerShop.Application.Common.Services
             var user = await _userRepository.GetUserById(userId);
 
             return true;
+        }
+
+        public string GenerateJwtToken(User user)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_super_secret_key_1234567890"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: "yourdomain.com",
+                audience: "yourdomain.com",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
     }
