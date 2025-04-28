@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SneakerShop.CustomerUI.Models;
+using SneakerShop.SharedViewModel.Responses.Product;
 
 namespace SneakerShop.CustomerUI.Services
 {
@@ -31,15 +28,14 @@ namespace SneakerShop.CustomerUI.Services
             }
         }
 
-        public async Task<ProductItem?> GetProductByIdAsync(long id)
+        public async Task<ProductDetailResponse> GetProductByIdAsync(long id)
         {
             try
             {
-                return await _httpClient.GetFromJsonAsync<ProductItem>($"{_apiBaseUrl}/products/{id}");
+                return await _httpClient.GetFromJsonAsync<ProductDetailResponse>($"{_apiBaseUrl}/products/{id}");
             }
             catch (Exception ex)
             {
-                // Log the exception
                 Console.WriteLine($"Error fetching product {id}: {ex.Message}");
                 return null;
             }

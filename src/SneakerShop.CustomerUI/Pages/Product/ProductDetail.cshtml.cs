@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SneakerShop.CustomerUI.Models;
 using SneakerShop.CustomerUI.Services;
+using SneakerShop.SharedViewModel.Responses.Product;
 
 namespace SneakerShop.CustomerUI.Pages.Product
 {
@@ -10,7 +11,7 @@ namespace SneakerShop.CustomerUI.Pages.Product
         private readonly ILogger<ProductDetail> _logger;
         private readonly ProductService _productService;
 
-        public ProductItem Product { get; set; } = new ProductItem();
+        public ProductDetailResponse Product { get; set; } = new ProductDetailResponse();
 
         public ProductDetail(ILogger<ProductDetail> logger, ProductService productService)
         {
@@ -18,17 +19,15 @@ namespace SneakerShop.CustomerUI.Pages.Product
             _productService = productService;
         }
 
-        public async Task<IActionResult> OnGetAsync(string slug)
+        public async Task OnGetAsync(string slug)
         {
-            var products = await _productService.GetAllProductsAsync();
-            Product = products.FirstOrDefault(p => p.Slug == slug) ??
-                new ProductItem
-                {
-                    Name = "Product Not Found",
-                    Description = "The requested product could not be found."
-                };
-
-            return Page();
+            var product = await _productService.GetProductByIdAsync(Int32.Parse(slug));
+            Product = product ?? new ProductDetailResponse();
+            // Console.WriteLine(product);
+            // if(product == null)
+            // {
+            //     return NotFound();
+            // }
         }
     }
 }

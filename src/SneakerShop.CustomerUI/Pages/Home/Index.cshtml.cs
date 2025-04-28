@@ -8,6 +8,7 @@ namespace SneakerShop.CustomerUI.Pages.Home
         private readonly ILogger<Index> _logger;
 
         public List<CarouselItem> CarouselItems { get; set; }
+        public new IFormFile File { get; set; }
 
         public Index(ILogger<Index> logger)
         {

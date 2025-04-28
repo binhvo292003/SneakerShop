@@ -25,6 +25,7 @@ namespace SneakerShop.Infrastructure.Repositories
             return await _context.Products
                 .Include(p => p.ProductImages)
                 .Include(p => p.Categories)
+                .Include(p => p.ProductVariants)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

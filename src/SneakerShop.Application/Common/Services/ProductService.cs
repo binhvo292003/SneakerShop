@@ -1,3 +1,4 @@
+using AutoMapper;
 using SneakerShop.Application.Common.Mappings;
 using SneakerShop.Domain.Entities;
 using SneakerShop.Domain.Repositories;
@@ -12,42 +13,35 @@ namespace SneakerShop.Application.Common.Services
         private readonly IProductImageRepository _productImageRepository;
         private readonly ProductImageService _productImageService;
         private readonly IProductVariantRepository _productVariantRepository;
+        private readonly IMapper _mapper;
 
         public ProductService(IProductRepository productRepository,
                         IProductImageRepository productImageRepository,
                         IProductVariantRepository productVariantRepository,
-                        ProductImageService productImageService)
+                        ProductImageService productImageService,
+                        IMapper mapper)
         {
             _productRepository = productRepository;
             _productImageRepository = productImageRepository;
             _productVariantRepository = productVariantRepository;
             _productImageService = productImageService;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllProducts()
+        public async Task<IEnumerable<ProductResponse>> GetAllProducts()
         {
             var products = await _productRepository.GetAllProducts();
-            return products.Select(p => new ProductDTO
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                Price = p.Price
-            });
+
+            var result = _mapper.Map<IEnumerable<ProductResponse>>(products);
+            return result;
         }
 
-        public async Task<ProductDTO> GetProductById(int id)
+        public async Task<ProductDetailResponse> GetProductById(int id)
         {
             var product = await _productRepository.GetProductById(id);
             if (product == null) return null;
 
-            return new ProductDTO
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price
-            };
+            return _mapper.Map<ProductDetailResponse>(product);
         }
 
         public async Task<ProductResponse> CreateProduct(CreateProductRequest request)
@@ -83,7 +77,7 @@ namespace SneakerShop.Application.Common.Services
                     };
                     imageUrls.Add(productImage);
                 }
-                pr.ImageUrls = imageUrls.Select(i => i.ImageUrl).ToList();
+                pr.ImageUrl = imageUrls.Select(i => i.ImageUrl).FirstOrDefault();
             }
 
             return pr;
@@ -124,7 +118,7 @@ namespace SneakerShop.Application.Common.Services
                 Name = updated.Name,
                 Description = updated.Description,
                 Price = updated.Price,
-                ImageUrls = newImageUrls
+                ImageUrl = newImageUrls.FirstOrDefault()
             };
         }
         public async Task<bool> DeleteProduct(int id)
@@ -198,6 +192,12 @@ namespace SneakerShop.Application.Common.Services
             var result = await _productVariantRepository.CreateProductVariant(productVariant);
 
             return result != null;
+        }
+
+        public async Task<List<ProductVariantResponse>> GetProductVariants(long productId)
+        {
+            var productVariants = await _productVariantRepository.GetProductVariantsByProductId(productId);
+            return _mapper.Map<List<ProductVariantResponse>>(productVariants);
         }
 
         public async Task<bool> UpdateStock(long productVariantId, int stock)

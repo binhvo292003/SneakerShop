@@ -43,6 +43,14 @@ namespace SneakerShop.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<List<ProductVariant>> GetProductVariantsByProductId(long productId)
+        {
+            var productVariants = _context.ProductVariants
+                .Where(pv => pv.ProductId == productId)
+                .ToListAsync();
+            return productVariants;
+        }
+
         public async Task<ProductVariant> UpdateProductVariant(ProductVariant productVariant)
         {
             var existingProductVariant = await _context.ProductVariants.FindAsync(productVariant.Id);
@@ -53,5 +61,6 @@ namespace SneakerShop.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return existingProductVariant;
         }
+        
     }
 }

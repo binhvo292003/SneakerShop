@@ -10,5 +10,6 @@ namespace SneakerShop.Domain.Repositories
         Task<ProductVariant> UpdateProductVariant(ProductVariant productVariant);
         // soft delete product variant
         Task<bool> DeleteProductVariant(long id);
+        Task<List<ProductVariant>> GetProductVariantsByProductId(long productId);
     }
 }

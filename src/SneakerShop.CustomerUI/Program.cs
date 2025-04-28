@@ -3,6 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<SneakerShop.CustomerUI.Services.ProductService>();
+builder.Services.AddScoped<SneakerShop.CustomerUI.Services.CategoryService>();
 
 
 var app = builder.Build();
