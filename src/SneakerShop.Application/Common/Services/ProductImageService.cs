@@ -28,14 +28,12 @@ namespace SneakerShop.Application.Common.Services
             _cloudinary = new Cloudinary(acc);
         }
 
-        public async Task<ProductImage> CreateProductImage(IFormFile file)
+        public async Task<ProductImage> CreateProductImage(IFormFile file, long? productId)
         {
             if (!(file.Length > 0))
             {
                 return null;
             }
-
-            var uploadResult = new ImageUploadResult();
 
             using var stream = file.OpenReadStream();
 
@@ -44,7 +42,8 @@ namespace SneakerShop.Application.Common.Services
                 File = new FileDescription(file.FileName, stream),
                 Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face")
             };
-            uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            ImageUploadResult uploadResult = await _cloudinary.UploadAsync(uploadParams);
             if (uploadResult.Error != null)
             {
                 throw new Exception($"Cloudinary upload failed: {uploadResult.Error.Message}");
@@ -53,21 +52,24 @@ namespace SneakerShop.Application.Common.Services
             var productImage = new ProductImage
             {
                 PublicId = uploadResult.PublicId,
-                ImageUrl = uploadResult.SecureUrl.ToString()
+                ImageUrl = uploadResult.SecureUrl.ToString(),
+                ProductId = productId,
             };
 
             return await _productImageRepository.CreateProductImage(productImage);
         }
 
-        public async Task<DeletionResult> DeleteImage(string publicId)
+        public async Task<DeletionResult> DeleteImage(long Id)
         {
-            if (string.IsNullOrEmpty(publicId))
+            ProductImage productImage = await _productImageRepository.GetProductImageById(Id);
+            if (productImage == null)
             {
                 return null;
             }
 
-            var deleteParams = new DeletionParams(publicId);
+            var deleteParams = new DeletionParams(productImage.PublicId);
             var result = await _cloudinary.DestroyAsync(deleteParams);
+            await _productImageRepository.DeleteProductImage(Id);
 
             return result;
         }

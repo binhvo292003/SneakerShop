@@ -15,9 +15,9 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProductImage(IFormFile request)
+        public async Task<IActionResult> CreateProductImage(IFormFile request, long productId)
         {
-            var created = await _service.CreateProductImage(request);
+            var created = await _service.CreateProductImage(request, productId);
             if (created == null)
             {
                 return BadRequest("Image upload failed.");
@@ -27,7 +27,7 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProductImage(string id)
+        public async Task<IActionResult> DeleteProductImage(long id)
         {
             var result = await _service.DeleteImage(id);
 

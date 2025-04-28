@@ -70,12 +70,7 @@ namespace SneakerShop.Application.Common.Services
                 var imageUrls = new List<ProductImage>();
                 foreach (var imageUrl in request.ImageUrls)
                 {
-                    var productImage = new ProductImage
-                    {
-                        ImageUrl = imageUrl,
-                        ProductId = result.Id
-                    };
-                    imageUrls.Add(productImage);
+                    await _productImageService.CreateProductImage(imageUrl, pr.Id);
                 }
                 pr.ImageUrl = imageUrls.Select(i => i.ImageUrl).FirstOrDefault();
             }
