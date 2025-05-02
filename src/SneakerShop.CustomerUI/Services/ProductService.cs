@@ -1,5 +1,7 @@
 using SneakerShop.CustomerUI.Models;
+using SneakerShop.SharedViewModel.Requests.Review;
 using SneakerShop.SharedViewModel.Responses.Product;
+using SneakerShop.SharedViewModel.Responses.Review;
 
 namespace SneakerShop.CustomerUI.Services
 {
@@ -41,5 +43,51 @@ namespace SneakerShop.CustomerUI.Services
             }
         }
 
+        public async Task<List<ProductItem>> GetProductsByFilterAsync(List<long> categoryIds)
+        {
+            try
+            {
+                var query = string.Join(",", categoryIds);
+                var products = await _httpClient.GetFromJsonAsync<List<ProductItem>>($"{_apiBaseUrl}/products/filter?categoryQuery={query}");
+                return products ?? new List<ProductItem>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching filtered products: {ex.Message}");
+                return new List<ProductItem>();
+            }
+        }
+
+        public async Task<HttpResponseMessage> SubmitReviewAsync(CreateReviewRequest review)
+        {
+            Console.WriteLine($"Submitting review: {review.Comment} for product {review.ProductId} stars: {review.Rating}");
+            review.UserId = 1;
+            var response = await _httpClient.PostAsJsonAsync(
+                $"{_apiBaseUrl}/reviews",
+                review);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Review submitted successfully.");
+            }
+            else
+            {
+                Console.WriteLine($"Error submitting review: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+            }
+            return response;
+        }
+
+        public async Task<List<ReviewResponse>> GetReviewsByProductIdAsync(long productId)
+        {
+            try
+            {
+            return await _httpClient.GetFromJsonAsync<List<ReviewResponse>>($"{_apiBaseUrl}/reviews?productId={productId}");
+            }
+            catch (Exception ex)
+            {
+            Console.WriteLine($"Error fetching reviews for product {productId}: {ex.Message}");
+            return new List<ReviewResponse>();
+            }
+        }
     }
 }

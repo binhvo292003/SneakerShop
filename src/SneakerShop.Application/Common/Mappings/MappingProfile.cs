@@ -1,6 +1,7 @@
 using AutoMapper;
 using SneakerShop.Domain.Entities;
 using SneakerShop.SharedViewModel.Responses.Product;
+using SneakerShop.SharedViewModel.Responses.Review;
 
 
 namespace SneakerShop.Application.Common.Mappings
@@ -16,7 +17,8 @@ namespace SneakerShop.Application.Common.Mappings
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductImages.Select(pi => pi.ImageUrl).ToList()))
                 .ForMember(dest => dest.ProductVariants, opt => opt.MapFrom(src => src.ProductVariants));
             CreateMap<ProductVariant, ProductVariantResponse>();
-
+            CreateMap<Review, ReviewResponse>()
+                .ForMember(dest=> dest.UserName, opt => opt.MapFrom(src=>src.User.Name));
         }
     }
 }

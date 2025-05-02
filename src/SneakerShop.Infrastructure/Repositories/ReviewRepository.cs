@@ -24,7 +24,10 @@ namespace SneakerShop.Infrastructure.Repositories
 
         public async Task<List<Review>> GetAllReviewsByProductId(long productId)
         {
-            var reviews = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
+            var reviews = await _context.Reviews.Where(r => r.ProductId == productId)
+                        .Include(u => u.User)
+                        .OrderByDescending(r => r.CreatedAt)
+                        .ToListAsync();
             return reviews;
         }
 

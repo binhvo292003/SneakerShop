@@ -45,15 +45,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddSwaggerGen(opts =>
 {
-    // 1️⃣  Describe the scheme
     var jwtScheme = new OpenApiSecurityScheme
     {
-        Type = SecuritySchemeType.Http,   // ← tells the UI it’s an HTTP auth header
+        Type = SecuritySchemeType.Http,  
         Scheme = "bearer",
         BearerFormat = "JWT",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Description = "Paste *only* the JWT. “Bearer ” is added for you.",
 
         Reference = new OpenApiReference
         {
@@ -64,7 +62,6 @@ builder.Services.AddSwaggerGen(opts =>
 
     opts.AddSecurityDefinition(jwtScheme.Reference.Id, jwtScheme);
 
-    // 2️⃣  Tell Swagger every operation can use that scheme
     opts.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         { jwtScheme, Array.Empty<string>() }

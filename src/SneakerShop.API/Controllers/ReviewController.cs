@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SneakerShop.Application.Common.Services;
 using SneakerShop.Domain.Repositories;
@@ -33,7 +34,6 @@ namespace SneakerShop.API.Controllers
         {
             try
             {
-
                 if (request == null)
                 {
                     return BadRequest("Request cannot be null.");

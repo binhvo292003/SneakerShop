@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SneakerShop.CustomerUI.Models;
 using SneakerShop.CustomerUI.Services;
@@ -14,7 +15,6 @@ namespace SneakerShop.CustomerUI.Pages.Product
 
         public List<ProductItem> Products { get; set; } = new List<ProductItem>();
         public List<CategoryResponse> Categories { get; set; } = new List<CategoryResponse>(); 
-
         public ProductList(ILogger<ProductList> logger, ProductService productService, CategoryService categoryService)
         {
             _logger = logger;
@@ -22,10 +22,18 @@ namespace SneakerShop.CustomerUI.Pages.Product
             _categoryService = categoryService;
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync([FromQuery] List<long> selectedCategories)
         {
-            Products = await _productService.GetAllProductsAsync();
             Categories = await _categoryService.GetAllCategoriesAsync();
+
+            if (selectedCategories != null && selectedCategories.Any())
+            {
+                Products = await _productService.GetProductsByFilterAsync(selectedCategories);
+            }
+            else
+            {
+                Products = await _productService.GetAllProductsAsync();
+            }
         }
     }
 }

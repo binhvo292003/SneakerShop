@@ -15,11 +15,12 @@
                         @foreach (var image in Model.Product.Images)
                         {
                             <div class="carousel-item @if (image == Model.Product.Images.First()) {
-                                    <text>active</text>
-                            }">
-                                <img src="@image" class="d-block w-100" alt="Product Image">
-                            </div>
-                        }
+                                                                                    <text>active</text>
+                            }
+">
+                            <img src="@image" class="d-block w-100" alt="Product Image">
+                        </div>
+                                                }
                     </div>
 
                     <!-- Controls -->
@@ -49,11 +50,11 @@
                 <div class="container">
                     <h2>@Model.Product.Name</h2>
                     <h3 class="text-primary">$@Model.Product.Price.ToString("0.00")</h3>
-                    
-                    <hr/>
+
+                    <hr />
                     <p class="lead">@Model.Product.Description</p>
 
-                    <hr/>
+                    <hr />
                     <div class="row">
                         <div class="form-group col-6">
                             <label for="size">Size</label>
@@ -70,9 +71,94 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-dark btn-lg mt-3">Add to Cart</button>
+                    <div class="row m-0">
+                        <button class="btn btn-dark btn-lg mt-3 fw-bold">Add to Cart</button>
+                    </div>
+
+                    <div class="row m-0">
+                        <button class="btn btn-danger btn-lg mt-3 fw-bold">Pay</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <hr />
+        <h1 class="mb-4">Leave a Review</h1>
+
+        <form method="post">
+            <input type="hidden" asp-for="UserReview.ProductId" value="@Model.Product.Id" />
+
+            <div class="mb-3">
+                <label class="form-label">Your Rating:</label>
+                <div class="rating star-rating display-6">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <i class="bi @(i <= @Model.UserReview.Rating ? "bi-star-fill" : "bi-star")" data-value="@i"
+                            style="cursor: pointer; user-select: none;" tabindex="-1"></i>
+                    }
+                </div>
+                <input type="hidden" asp-for="@Model.UserReview.Rating" id="ratingValue" />
+                <span asp-validation-for="@Model.UserReview.Rating" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="@Model.UserReview.Comment" class="form-label">Your Comment:</label>
+                <textarea asp-for="@Model.UserReview.Comment" class="form-control" rows="4"
+                    placeholder="Write your review here..."></textarea>
+                <span asp-validation-for="@Model.UserReview.Comment" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+
+    <hr />
+    <h1 class="mb-4">Reviews</h1>
+    <div class="container">
+
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="review mb-4 p-3 border rounded">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">@review.UserName</h5>
+                    <small class="text-muted">@review.CreatedAt.ToString("MMMM dd, yyyy")</small>
+                </div>
+                <div class="star-rating mt-2">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <i class="bi @(i <= review.Rating ? "bi-star-fill text-warning" : "bi-star")"></i>
+                    }
+                </div>
+                <p class="mt-2">@review.Comment</p>
+            </div>
+        }
+
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const stars = document.querySelectorAll('.rating.star-rating .bi');
+        const ratingInput = document.getElementById('ratingValue');
+        let currentRating = @Model.UserReview.Rating;
+
+        const highlight = (r) => {
+            stars.forEach(s => {
+                const val = parseInt(s.getAttribute('data-value'));
+                s.className = 'bi ' + (val <= r ? 'bi-star-fill text-warning' : 'bi-star');
+            });
+        };
+
+        stars.forEach(star => {
+            star.addEventListener('mouseover', () => highlight(parseInt(star.dataset.value)));
+            star.addEventListener('mouseout', () => highlight(currentRating));
+            star.addEventListener('click', () => {
+                currentRating = parseInt(star.dataset.value);
+                ratingInput.value = currentRating;
+                highlight(currentRating);
+            });
+        });
+
+        highlight(currentRating);
+    });
+</script>

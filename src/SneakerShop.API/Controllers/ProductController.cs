@@ -18,7 +18,6 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllProducts()
         {
             return Ok(await _service.GetAllProducts());
