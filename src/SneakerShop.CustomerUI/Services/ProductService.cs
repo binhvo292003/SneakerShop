@@ -60,8 +60,6 @@ namespace SneakerShop.CustomerUI.Services
 
         public async Task<HttpResponseMessage> SubmitReviewAsync(CreateReviewRequest review)
         {
-            Console.WriteLine($"Submitting review: {review.Comment} for product {review.ProductId} stars: {review.Rating}");
-            review.UserId = 1;
             var response = await _httpClient.PostAsJsonAsync(
                 $"{_apiBaseUrl}/reviews",
                 review);

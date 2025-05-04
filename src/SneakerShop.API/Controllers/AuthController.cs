@@ -17,8 +17,23 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string email, string password, string name)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
+            var email = request.Email;
+            var password = request.Password;
+            var name = request.Name;
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Email, password, and name are required.");
+            }
+
+            var checkEmail = await _service.CheckEmailExists(email);
+            if (checkEmail)
+            {
+                return BadRequest("Email already exists.");
+            }
+
             var result = await _service.RegisterUser(email, password, name);
             return result ? Ok("User registered successfully.") : BadRequest("Registration failed.");
         }
@@ -33,7 +48,8 @@ namespace SneakerShop.API.Controllers
                 var response = new LoginResponse
                 {
                     Token = token,
-                    Email = user.Email
+                    Email = user.Email,
+                    UserId = user.Id.ToString()
                 };
                 return Ok(response);
             }

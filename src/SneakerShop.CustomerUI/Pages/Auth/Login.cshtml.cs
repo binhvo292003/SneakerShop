@@ -55,6 +55,7 @@ namespace SneakerShop.CustomerUI.Pages.Auth
                 SameSite = SameSiteMode.None,     
             };
             Response.Cookies.Append("AccessToken", loginResp.Token, cookieOptions);
+            Response.Cookies.Append("UserId", loginResp.UserId, cookieOptions);
 
             var claims = new List<Claim>
             {

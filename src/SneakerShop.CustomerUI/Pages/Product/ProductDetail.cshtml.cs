@@ -48,9 +48,9 @@ namespace SneakerShop.CustomerUI.Pages.Product
             }
 
             UserReview.ProductId = int.Parse(slug);
+            UserReview.UserId = long.Parse(Request.Cookies["UserId"]);
 
             var response = await _productService.SubmitReviewAsync(UserReview);
-
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToPage(new { slug });

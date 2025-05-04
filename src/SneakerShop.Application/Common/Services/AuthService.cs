@@ -71,5 +71,11 @@ namespace SneakerShop.Application.Common.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public async Task<bool> CheckEmailExists(string email)
+        {
+            var user = await _userRepository.GetUserByEmail(email);
+            return user != null;
+        }
+
     }
 }
