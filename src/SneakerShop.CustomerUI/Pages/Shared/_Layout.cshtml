@@ -87,10 +87,35 @@
                 </ul>
 
 
-                <form class="d-flex" role="search" method="get" asp-page="/Search/Index">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                        name="query">
-                </form>
+                <div class="d-flex align-items-center">
+                    <form class="d-flex" role="search" method="get" asp-page="/Search/Index">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                            name="query">
+                    </form>
+
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="navbar-text me-2">
+                                    Hello, @User.Identity.Name!
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-bold" asp-page="/Register">Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </nav>
 

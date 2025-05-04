@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SneakerShop.Application.Common.Services;
 using SneakerShop.SharedViewModel.Requests.Auth;
+using SneakerShop.SharedViewModel.Responses.Auth;
 
 namespace SneakerShop.API.Controllers
 {
@@ -28,8 +29,13 @@ namespace SneakerShop.API.Controllers
             var user = await _service.LoginUser(request.Email, request.Password);
             if (user != null)
             {
-            var token = _service.GenerateJwtToken(user);
-            return Ok(new { access_token = token });
+                var token = _service.GenerateJwtToken(user);
+                var response = new LoginResponse
+                {
+                    Token = token,
+                    Email = user.Email
+                };
+                return Ok(response);
             }
             return Unauthorized("Invalid credentials.");
         }
