@@ -1,0 +1,51 @@
+@page "/home"
+@model SneakerShop.CustomerUI.Pages.Home.Index
+@{
+    ViewData["Title"] = "SneakerShop";
+
+}
+
+<div class="container-fluid p-0">
+    <div>
+        <a asp-area="" asp-page="/Product/ProductList" class="text-decoration-none">
+            <img src="~/images/hero.png" class="d-block w-100" alt="...">
+        </a>
+    </div>
+</div>
+
+<div class="container p-0">
+    <h2 class="py-3 text-center">Gender</h2>
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-12 col-md-4 p-0 text-center px-1">
+                <div class="position-relative">
+                    <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold fs-4">Men</div>
+                    <img src="~/images/temp.png" class="img-fluid mx-auto" alt="Men's collection">
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 p-0 text-center px-1">
+                <div class="position-relative">
+                    <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold fs-4">Women</div>
+                    <img src="~/images/temp.png" class="img-fluid mx-auto" alt="Women's collection">
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 p-0 text-center px-1">
+                <div class="position-relative">
+                    <div class="position-absolute top-50 start-50 translate-middle text-white fw-bold fs-4">Accessories
+                    </div>
+                    <img src="~/images/temp.png" class="img-fluid mx-auto" alt="Women's collection">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid p-0 pt-5">
+    <div class="position-relative">
+        <a asp-area="" asp-page="/Product/ProductList" class="text-decoration-none">
+            <h1 class="position-absolute top-50 start-50 translate-middle text-white fw-bold display-3">Buy Now</h1>
+            <img src="~/images/hero1.png" class="img-fluid mx-auto" alt="Shop Now">
+        </a>
+    </div>
+</div>
