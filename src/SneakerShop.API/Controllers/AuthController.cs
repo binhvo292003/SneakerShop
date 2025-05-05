@@ -16,6 +16,13 @@ namespace SneakerShop.API.Controllers
             _service = service;
         }
 
+        [HttpGet("users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _service.GetAllUsers();
+            return users != null ? Ok(users) : BadRequest("No users found.");
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {

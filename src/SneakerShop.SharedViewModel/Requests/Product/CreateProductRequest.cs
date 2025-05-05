@@ -7,6 +7,7 @@ namespace SneakerShop.SharedViewModel.Requests.Product
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public List<IFormFile> ImageUrls { get; set; } = new List<IFormFile>();
+        public List<IFormFile> Images { get; set; } = new List<IFormFile>();
+        public List<int> Categories { get; set; } = new List<int>();
     }
 }

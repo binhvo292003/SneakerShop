@@ -8,7 +8,8 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const dummyData = [
     {
@@ -40,13 +41,38 @@ interface UserItem {
 }
 
 export default function UserPage() {
+    const [users, setUsers] = useState<UserItem[]>([]);
     const [open, setOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<UserItem | null>(null);
+    const baseUrl = 'http://localhost:8000/api/auth/users';
 
     const handleViewDetail = (user: UserItem) => {
         setSelectedUser(user);
         setOpen(true);
     };
+
+    useEffect(() => {
+        const source = axios.CancelToken.source();
+
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get(baseUrl, {
+                    cancelToken: source.token,
+                });
+                setUsers(response.data);
+            } catch (err) {
+                if (axios.isCancel(err)) {
+                    console.log('Request canceled', err.message);
+                } 
+            }
+        };
+
+        fetchUsers();
+
+        return () => {
+            source.cancel('Component unmounted');
+        };
+    }, []);
 
     return (
         <div className="">
@@ -63,7 +89,7 @@ export default function UserPage() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {dummyData.map((user) => (
+                    {users.map((user) => (
                         <TableRow key={user.id}>
                             <TableCell className="font-medium">{user.id}</TableCell>
                             <TableCell>{user.name}</TableCell>

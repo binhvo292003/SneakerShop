@@ -62,17 +62,23 @@ namespace SneakerShop.Application.Common.Services
                 Name = result.Name,
                 Description = result.Description,
                 Price = result.Price
-
             };
 
-            if (request.ImageUrls != null)
+            if (request.Images != null)
             {
                 var imageUrls = new List<ProductImage>();
-                foreach (var imageUrl in request.ImageUrls)
+                foreach (var imageUrl in request.Images)
                 {
                     await _productImageService.CreateProductImage(imageUrl, pr.Id);
                 }
                 pr.ImageUrl = imageUrls.Select(i => i.ImageUrl).FirstOrDefault();
+            }
+
+            if(request.Categories != null){
+                foreach (var categoryId in request.Categories)
+                {
+                    await _productRepository.AddCategoryToProduct(pr.Id, categoryId);
+                }
             }
 
             return pr;
@@ -164,16 +170,12 @@ namespace SneakerShop.Application.Common.Services
             }).ToList();
         }
 
-        public async Task<List<ProductDTO>> GetProductsByFilter(List<long> categoryIds, string sortBy = null, int page = 1, int pageSize = 10)
+        public async Task<IEnumerable<ProductResponse>> GetProductsByFilter(List<long> categoryIds, string sortBy = null, int page = 1, int pageSize = 10)
         {
             var products = await _productRepository.GetProductsByFilter(categoryIds, sortBy, page, pageSize);
-            return products.Select(p => new ProductDTO
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                Price = p.Price
-            }).ToList();
+            
+            var result = _mapper.Map<IEnumerable<ProductResponse>>(products);
+            return result;
         }
 
         public async Task<bool> AddProductVariant(AddProductVariantRequest request)

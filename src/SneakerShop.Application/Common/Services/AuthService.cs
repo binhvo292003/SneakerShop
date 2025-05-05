@@ -77,5 +77,10 @@ namespace SneakerShop.Application.Common.Services
             return user != null;
         }
 
+        public async Task<List<User>> GetAllUsers()
+        {
+            var users = await _userRepository.GetAllUsers();
+            return users;
+        }
     }
 }

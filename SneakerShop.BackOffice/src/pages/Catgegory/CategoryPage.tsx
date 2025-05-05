@@ -4,45 +4,14 @@ import { Input } from '@/components/ui/input';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import axios from 'axios';
 import { Edit, Trash2 } from 'lucide-react';
-import { useState } from 'react';
-
-const dummyData = [
-    {
-        id: 1,
-        name: 'Basketball',
-    },
-    {
-        id: 2,
-        name: 'Running',
-    },
-    {
-        id: 3,
-        name: 'Lifestyle',
-    },
-    {
-        id: 4,
-        name: 'Skateboarding',
-    },
-    {
-        id: 5,
-        name: 'Tennis',
-    },
-    {
-        id: 6,
-        name: 'Training',
-    },
-    {
-        id: 7,
-        name: 'Limited Edition',
-    },
-];
+import { useEffect, useState } from 'react';
 
 interface CategoryItem {
     id: number;
@@ -50,9 +19,25 @@ interface CategoryItem {
 }
 
 export default function CategoryPage() {
+    const [categories, setCategories] = useState<CategoryItem[]>([]);
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState<CategoryItem | null>(null);
     const [name, setName] = useState('');
+    const baseUrl = 'http://localhost:8000/api/category';
+
+    const fetchCategories = async () => {
+        const source = axios.CancelToken.source();
+        try {
+            const response = await axios.get(baseUrl, {
+                cancelToken: source.token,
+            });
+            setCategories(response.data);
+        } catch (err) {
+            if (axios.isCancel(err)) {
+                console.log('Request canceled', err.message);
+            }
+        }
+    };
 
     const handleEdit = (category: { id: number; name: string }) => {
         setEditing(category);
@@ -66,23 +51,51 @@ export default function CategoryPage() {
         setOpen(true);
     };
 
-    const handleSubmit = () => {
-        if (editing) {
-            console.log('Editing category:', { id: editing.id, name });
-        } else {
-            console.log('Adding new category:', { name });
+    const handleSubmit = async () => {
+        const source = axios.CancelToken.source();
+
+        try {
+            if (editing) {
+                console.log('Editing category:', { id: editing.id, name });
+                await axios.put(
+                    `${baseUrl}/${editing.id}`,
+                    { id: editing.id, name },
+                    {
+                        cancelToken: source.token,
+                    }
+                );
+            } else {
+                console.log('Adding new category:', { name });
+                await axios.post(
+                    baseUrl,
+                    { name },
+                    {
+                        cancelToken: source.token,
+                    }
+                );
+            }
+            // Refresh the category list
+            await fetchCategories();
+        } catch (err) {
+            if (axios.isCancel(err)) {
+                console.log('Request canceled', err.message);
+            }
+        } finally {
+            setOpen(false);
         }
-        setOpen(false);
     };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
     return (
         <div className="">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Product Categories</h2>
+                <h2 className="text-xl font-bold">Categories</h2>
                 <Button onClick={handleNew}>Add Category</Button>
             </div>{' '}
-            <Table>
-                <TableCaption>A list of your recent invoices.</TableCaption>
+            <Table className="caret-transparent">
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[100px]">Id</TableHead>
@@ -91,7 +104,7 @@ export default function CategoryPage() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {dummyData.map((data) => (
+                    {categories.map((data) => (
                         <TableRow key={data.id}>
                             <TableCell className="font-medium">{data.id}</TableCell>
                             <TableCell>{data.name}</TableCell>

@@ -5,10 +5,9 @@ import { Button } from '@/components/ui/button';
 import ProductTable from './ProductTable';
 import ProductDialog from './ProductDialog';
 import Product from '@/model/product/Product';
-import CreateProductRequest from '@/model/product/CreateProductRequest';
 
 export default function ProductPage() {
-    const { items: products, createProduct, updateProduct, fetchProducts } = useProduct();
+    const { items: products, fetchProducts } = useProduct();
 
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState<Product | null>(null);
@@ -27,15 +26,6 @@ export default function ProductPage() {
         setOpen(true);
     };
 
-    const handleSubmit = (data: CreateProductRequest) => {
-        if (editing) {
-            createProduct( data);
-        } else {
-            createProduct(data);
-        }
-        setOpen(false);
-    };
-
     return (
         <div className="">
             <div className="flex justify-between items-center mb-4">
@@ -48,7 +38,6 @@ export default function ProductPage() {
             <ProductDialog
                 open={open}
                 onClose={() => setOpen(false)}
-                onSubmit={handleSubmit}
                 editing={editing}
             />
         </div>

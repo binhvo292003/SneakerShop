@@ -33,9 +33,9 @@ namespace SneakerShop.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<User>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return await _context.Users.ToListAsync();
         }
 
         public async Task<User> GetUserByEmail(string email)

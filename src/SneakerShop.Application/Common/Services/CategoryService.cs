@@ -1,16 +1,21 @@
+using AutoMapper;
 using SneakerShop.Application.Common.Mappings;
 using SneakerShop.Domain.Entities;
 using SneakerShop.Domain.Repositories;
+using SneakerShop.SharedViewModel.Requests.Category;
+using SneakerShop.SharedViewModel.Responses.Category;
 
 namespace SneakerShop.Application.Common.Services
 {
     public class CategoryService
     {
         private readonly ICategoryRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CategoryService(ICategoryRepository repository)
+        public CategoryService(ICategoryRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<CategoryDTO>> GetAllCategories()
@@ -35,27 +40,30 @@ namespace SneakerShop.Application.Common.Services
             };
         }
 
-        public async Task<CategoryDTO> CreateCategory(CategoryDTO dto)
+        public async Task<CategoryResponse> CreateCategory(CreateCategoryRequest request)
         {
             var category = new Category
             {
-                Name = dto.Name,
+                Name = request.Name,
             };
 
-            var result = await _repository.CreateCategory(category);
+            var newCategory = await _repository.CreateCategory(category);
 
-            dto.Id = result.Id;
-            return dto;
+            var result = _mapper.Map<CategoryResponse>(newCategory);
+            return result;
         }
 
-        public async Task<CategoryDTO> UpdateCategory(CategoryDTO dto)
+        public async Task<CategoryResponse> UpdateCategory(UpdateCategoryRequest request)
         {
-            var existing = await _repository.GetCategoryById(dto.Id);
+            var existing = await _repository.GetCategoryById(request.Id);
             if (existing == null) return null;
 
-            existing.Name = dto.Name;
-            await _repository.UpdateCategory(existing);
-            return dto;
+            existing.Name = request.Name;
+
+            var editCategory = await _repository.UpdateCategory(existing);
+            var result = _mapper.Map<CategoryResponse>(editCategory);
+
+            return result;
         }
 
         public async Task<bool> DeleteCategory(long id)

@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import {
-    LayoutDashboard,
     Users,
     ShoppingCart,
     BarChart3,
@@ -31,11 +30,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     const [activeItem, setActiveItem] = useState('Dashboard');
 
     const sidebarItems: SidebarItem[] = [
-        {
-            title: 'Dashboard',
-            icon: <LayoutDashboard className="h-5 w-5" />,
-            href: '/',
-        },
         {
             title: 'Users',
             icon: <Users className="h-5 w-5" />,

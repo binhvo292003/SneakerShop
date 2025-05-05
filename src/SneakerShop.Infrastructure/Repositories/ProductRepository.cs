@@ -115,6 +115,7 @@ namespace SneakerShop.Infrastructure.Repositories
         {
             return await _context.Products
                 .Include(p => p.Categories)
+                .Include(p => p.ProductImages)
                 .Where(p => categoryIds.All(rcid => p.Categories.Any(c => c.Id == rcid)))
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)

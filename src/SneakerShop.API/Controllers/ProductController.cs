@@ -31,7 +31,7 @@ namespace SneakerShop.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody]CreateProductRequest request)
+        public async Task<IActionResult> CreateProduct([FromForm]CreateProductRequest request)
         {
             var created = await _service.CreateProduct(request);
             return created is null ? NotFound() : Ok(created);
